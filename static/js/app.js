@@ -1,30 +1,83 @@
+// function buildMetadata(sample) {
+//
+//
+//   // @TODO: Complete the following function that builds the metadata panel
+//
+//   // Use `d3.json` to fetch the metadata for a sample
+//     // Use d3 to select the panel with id of `#sample-metadata`
+//
+//     // Use `.html("") to clear any existing metadata
+//
+//     // Use `Object.entries` to add each key and value pair to the panel
+//     // Hint: Inside the loop, you will need to use d3 to append new
+//     // tags for each key-value in the metadata.
+//
+//     // BONUS: Build the Gauge Chart
+//     // buildGauge(data.WFREQ);
+// }
+
 function buildMetadata(sample) {
-
-  // @TODO: Complete the following function that builds the metadata panel
-
-  // Use `d3.json` to fetch the metadata for a sample
-    // Use d3 to select the panel with id of `#sample-metadata`
-
-    // Use `.html("") to clear any existing metadata
-
-    // Use `Object.entries` to add each key and value pair to the panel
-    // Hint: Inside the loop, you will need to use d3 to append new
-    // tags for each key-value in the metadata.
-
-    // BONUS: Build the Gauge Chart
-    // buildGauge(data.WFREQ);
+  let url = `/metadata/${sample}`;
+  d3.json(url).then((response) => {
+    var metadataText = d3.select('#sample-metadata');
+    metadataText.html("");
+    console.log(response);
+    Object.entries(response).forEach(([key, value]) => {
+      console.log(`${key} : ${value}`);
+      metadataText.append("p").text(`${key} : ${value}`);
+    });
+  });
 }
+
+
 
 function buildCharts(sample) {
+  var url =  `/samples/${sample}`;
+  d3.json(url).then((data)=> {
+    var x = data['otu_ids'];
+    var y = data['sample_values'];
+    var size_val =data['sample_values'];
+    var labels = data['otu_labels'];
 
-  // @TODO: Use `d3.json` to fetch the sample data for the plots
+    var trace1 = {
+      x:x,
+      y:y,
+      mode:'markers',
+      marker:{
+        size:size_val,
+        color:x,
+        label:labels,
+        type:'scatter',
+        opacity:0.4
+      }
+    }
 
-    // @TODO: Build a Bubble Chart using the sample data
 
-    // @TODO: Build a Pie Chart
-    // HINT: You will need to use slice() to grab the top 10 sample_values,
-    // otu_ids, and labels (10 each).
-}
+    var data_trace = [trace1];
+    var layout = {
+      title: "Belly Button size(to scale)",
+      xaxis:{title:'ID'},
+      showlegeng:true
+    };
+
+    Plotly.newPlot('bubble',data_trace,layout);
+
+    //build pie chart
+    var pie_data = [{
+      labels:x,
+      values:size_val.slice(0,11),
+      text:y.slice(0,10),
+      hovertext:labels,
+      type:'pie'
+    }];
+
+    var pie_layout = { title:'% of '}
+
+    Plotly.newPlot('pie',pie_data,pie_layout);
+  }); //end of response handling.
+}; //END OF BUILD function.
+
+
 
 function init() {
   // Grab a reference to the dropdown select element
@@ -32,6 +85,7 @@ function init() {
 
   // Use the list of sample names to populate the select options
   d3.json("/names").then((sampleNames) => {
+
     sampleNames.forEach((sample) => {
       selector
         .append("option")
