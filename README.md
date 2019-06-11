@@ -4,11 +4,11 @@
 
  Building an interactive dashboard to explore the [Belly Button Biodiversity DataSet](http://robdunnlab.com/projects/belly-button-biodiversity/).
 
-## Step 1 - Plotly.js
+##  Plotly.js
 
-Use Plotly.js to build interactive charts for the dashboard.
+ Plotly.js is used to build interactive charts for the dashboard.
 
-* Create a PIE chart that uses data from the samples route (`/samples/<sample>`) to display the top 10 samples.
+* A PIE chart that uses data from the samples route (`/samples/<sample>`) to display the top 10 samples.
 
   * Use `sample_values` as the values for the PIE chart
 
@@ -18,7 +18,7 @@ Use Plotly.js to build interactive charts for the dashboard.
 
   ![PIE Chart](Images/pie_chart.png)
 
-* Create a Bubble Chart that uses data from the samples route (`/samples/<sample>`) to display each sample.
+* A Bubble Chart that uses data from the samples route (`/samples/<sample>`) to display each sample.
 
   * Use `otu_ids` for the x values
 
@@ -38,24 +38,4 @@ Use Plotly.js to build interactive charts for the dashboard.
 
 * Update all of the plots any time that a new sample is selected.
 
-
-
-## Step 2 - Heroku
-
-Deploy your Flask app to Heroku.
-
-- - -
-
-## Advanced Challenge Assignment (Optional)
-
-The following task is completely optional and is very advanced.
-
-* Adapt the Gauge Chart from <https://plot.ly/javascript/gauge-charts/> to plot the Weekly Washing Frequency obtained from the route `/wfreq/<sample>`
-
-* You will need to modify the example gauge code to account for values ranging from 0 - 9.
-
-* Update the chart whenever a new sample is selected
-
-![Weekly Washing Frequency Gauge](Images/gauge.png)
-
-- - -
+---
